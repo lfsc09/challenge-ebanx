@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 describe('Transfer Usecases', () => {
-	beforeAll(async () => {
+	beforeEach(async () => {
         await axios.post('http://127.0.0.1:5000/reset');
 		await axios.post('http://127.0.0.1:5000/event', {
 			type: 'deposit',
