@@ -15,5 +15,5 @@ export const handleApiConfigCors = (request: Request, response: Response, next: 
  * Handle generation of @param response of errors thrown from deeper layers
  */
 export const handleApiErrors = (error: ApiError, request: Request, response: Response, next: NextFunction): void => {
-	response.status(error.code).json({ message: error.message });
+	response.status(error.code).send(error.message);
 };

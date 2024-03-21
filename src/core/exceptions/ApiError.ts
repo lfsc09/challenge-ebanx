@@ -7,10 +7,9 @@
 export class ApiError extends Error {
 	code: number;
 
-	constructor(code: number = 500, message: unknown) {
-		if (typeof message === 'string') super(message);
-		else if (message instanceof Error) super(message.message);
-		else super('Unknown error..');
+	constructor(code: number = 500, message: any) {
+		if (message instanceof Error) super(message.message);
+		else super(message);
 		this.code = code;
 	}
 }
