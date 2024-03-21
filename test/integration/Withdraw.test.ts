@@ -30,7 +30,7 @@ describe('Withdraw Usecases', () => {
 				origin: '100',
 				amount: 10,
 			});
-			expect(response.status).toBe(200);
+			expect(response.status).toBe(201);
 			expect(response.data).toEqual({ destination: { id: '100', balance: 10 } });
 		} catch (err: any) {}
 	});

@@ -25,7 +25,7 @@ describe('Deposit Usecases', () => {
 				destination: '100',
 				amount: 10,
 			});
-			expect(response.status).toBe(200);
+			expect(response.status).toBe(201);
 			expect(response.data).toEqual({ destination: { id: '100', balance: 10 } });
 		} catch (err: any) {}
 	});
@@ -37,7 +37,7 @@ describe('Deposit Usecases', () => {
 				destination: '100',
 				amount: 50,
 			});
-			expect(response.status).toBe(200);
+			expect(response.status).toBe(201);
 			expect(response.data).toEqual({ destination: { id: '100', balance: 60 } });
 		} catch (err: any) {}
 	});

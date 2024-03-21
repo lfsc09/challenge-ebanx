@@ -37,7 +37,7 @@ describe('Transfer Usecases', () => {
 				destination: '100',
 				amount: 15,
 			});
-			expect(response.status).toBe(200);
+			expect(response.status).toBe(201);
 			expect(response.data).toEqual({ origin: { id: '200', balance: 35 }, destination: { id: '100', balance: 25 } });
 		} catch (err: any) {}
 	});

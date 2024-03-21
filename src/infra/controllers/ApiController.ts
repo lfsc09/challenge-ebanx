@@ -14,7 +14,7 @@ export class ApiController {
 	static async reset(request: CustomRequest, response: Response, next: NextFunction) {
 		try {
 			await new ResetUsercase(request.apiRepositoryMemory).execute();
-			response.status(200).send();
+			response.status(200).send("OK");
 		} catch (err: any) {
 			return next(err instanceof ApiError ? err : new ApiError(500, err));
 		}
@@ -84,7 +84,7 @@ export class ApiController {
 				default:
 					throw new ApiError(500, 'invalid type');
 			}
-			response.status(200).json(output);
+			response.status(201).json(output);
 		} catch (err: any) {
 			return next(err instanceof ApiError ? err : new ApiError(500, err));
 		}
