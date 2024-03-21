@@ -4,6 +4,8 @@ export abstract class ApiRepository {
 	abstract depositToAccount(input: Input_DepositToAccount): Promise<Output_DepositToAccount>;
 
 	abstract withdrawFromAccount(input: Input_WithdrawFromAccount): Promise<Output_WithdrawFromAccount>;
+
+    abstract transferBetweenAccount(input: Input_TransferBetweenAccount): Promise<Output_TransferBetweenAccount>;
 }
 
 export type Input_DepositToAccount = {
@@ -23,6 +25,22 @@ export type Input_WithdrawFromAccount = {
 };
 export type Output_WithdrawFromAccount = {
 	origin: {
+		id: string;
+		balance: number;
+	};
+};
+
+export type Input_TransferBetweenAccount = {
+	origin: string;
+    destination: string;
+	amount: number;
+};
+export type Output_TransferBetweenAccount = {
+	origin: {
+		id: string;
+		balance: number;
+	};
+    destination: {
 		id: string;
 		balance: number;
 	};

@@ -1,8 +1,10 @@
 import {
 	ApiRepository,
 	Input_DepositToAccount,
+	Input_TransferBetweenAccount,
 	Input_WithdrawFromAccount,
 	Output_DepositToAccount,
+	Output_TransferBetweenAccount,
 	Output_WithdrawFromAccount,
 } from '../../../application/repositories/ApiRepository';
 import { Account } from '../../../core/entities/Account';
@@ -27,7 +29,19 @@ export class ApiRepositoryMemory extends ApiRepository {
 	async withdrawFromAccount(input: Input_WithdrawFromAccount): Promise<Output_WithdrawFromAccount> {
 		let account: Account | undefined = this.accountManager.get(input.origin);
 		if (!account) throw new ApiError(404, 0);
-        account.withdraw(input.amount);
+		account.withdraw(input.amount);
 		return { origin: { id: account.getAccountId(), balance: account.getBalance() } };
+	}
+
+	async transferBetweenAccount(input: Input_TransferBetweenAccount): Promise<Output_TransferBetweenAccount> {
+		let originAccount: Account | undefined = this.accountManager.get(input.origin);
+		let destinationAccount: Account | undefined = this.accountManager.get(input.destination);
+		if (!originAccount || !destinationAccount) throw new ApiError(404, 0);
+		originAccount.withdraw(input.amount);
+		destinationAccount.deposit(input.amount);
+		return {
+			origin: { id: originAccount.getAccountId(), balance: originAccount.getBalance() },
+			destination: { id: destinationAccount.getAccountId(), balance: destinationAccount.getBalance() },
+		};
 	}
 }

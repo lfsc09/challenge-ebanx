@@ -3,6 +3,7 @@ import { DepositUsercase } from '../../application/usecases/Deposit';
 import { WithdrawUsercase } from '../../application/usecases/Withdraw';
 import { ApiError } from '../../core/exceptions/ApiError';
 import { CustomRequest } from '../../main';
+import { TransferUsercase } from '../../application/usecases/Transfer';
 
 export class ApiController {
 	/**
@@ -44,6 +45,12 @@ export class ApiController {
 					output = await new WithdrawUsercase(request.apiRepositoryMemory).execute(input);
 					break;
 				case 'transfer':
+					input = {
+						origin: request.body?.origin ?? undefined,
+						destination: request.body?.destination ?? undefined,
+						amount: request.body?.amount ?? undefined,
+					};
+					output = await new TransferUsercase(request.apiRepositoryMemory).execute(input);
 					break;
 				default:
 					throw new ApiError(500, 'invalid type');
