@@ -15,6 +15,10 @@ export class ApiRepositoryMemory extends ApiRepository {
 		super();
 	}
 
+    async reset(): Promise<void> {
+        this.accountManager.clear();
+    }
+
 	async depositToAccount(input: Input_DepositToAccount): Promise<Output_DepositToAccount> {
 		let account: Account | undefined = this.accountManager.get(input.destination);
 		if (!account) {

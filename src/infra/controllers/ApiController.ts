@@ -4,8 +4,21 @@ import { WithdrawUsercase } from '../../application/usecases/Withdraw';
 import { ApiError } from '../../core/exceptions/ApiError';
 import { CustomRequest } from '../../main';
 import { TransferUsercase } from '../../application/usecases/Transfer';
+import { ResetUsercase } from '../../application/usecases/Reset';
 
 export class ApiController {
+    /**
+     * Reset the memory repository
+     */
+    static async reset(request: CustomRequest, response: Response, next: NextFunction) {
+        try {
+            await new ResetUsercase(request.apiRepositoryMemory).execute();
+            response.status(200).send();
+        } catch (err: any) {
+            return next(err instanceof ApiError ? err : new ApiError(500, err));
+        }
+    }
+
 	/**
 	 * Proccess an event
 	 *

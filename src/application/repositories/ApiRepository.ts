@@ -1,6 +1,8 @@
 import { Account } from '../../core/entities/Account';
 
 export abstract class ApiRepository {
+    abstract reset(): Promise<void>
+
 	abstract depositToAccount(input: Input_DepositToAccount): Promise<Output_DepositToAccount>;
 
 	abstract withdrawFromAccount(input: Input_WithdrawFromAccount): Promise<Output_WithdrawFromAccount>;
