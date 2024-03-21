@@ -14,6 +14,10 @@ export class Account {
         this.balance -= amount;
     }
 
+    getAccountId(): string {
+        return this.account_id;
+    }
+
     getBalance(): number {
         return this.balance;
     }
