@@ -48,7 +48,11 @@ export class ApiRepositoryMemory extends ApiRepository {
 	async transferBetweenAccount(input: Input_TransferBetweenAccount): Promise<Output_TransferBetweenAccount> {
 		let originAccount: Account | undefined = this.accountManager.get(input.origin);
 		let destinationAccount: Account | undefined = this.accountManager.get(input.destination);
-		if (!originAccount || !destinationAccount) throw new ApiError(404, 0);
+		if (!originAccount) throw new ApiError(404, 0);
+        if (!destinationAccount) {
+            destinationAccount = new Account(input.destination, 0);
+			this.accountManager.set(destinationAccount.getAccountId(), destinationAccount);
+        }
 		originAccount.withdraw(input.amount);
 		destinationAccount.deposit(input.amount);
 		return {

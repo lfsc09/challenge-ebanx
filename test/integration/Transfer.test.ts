@@ -2,13 +2,13 @@ import axios from 'axios';
 
 describe('Transfer Usecases', () => {
 	beforeEach(async () => {
-        await axios.post('http://127.0.0.1:5000/reset');
+		await axios.post('http://127.0.0.1:5000/reset');
 		await axios.post('http://127.0.0.1:5000/event', {
 			type: 'deposit',
 			destination: '100',
 			amount: 10,
 		});
-        await axios.post('http://127.0.0.1:5000/event', {
+		await axios.post('http://127.0.0.1:5000/event', {
 			type: 'deposit',
 			destination: '200',
 			amount: 50,
@@ -42,7 +42,7 @@ describe('Transfer Usecases', () => {
 		} catch (err: any) {}
 	});
 
-    test('Transfer from existent accounts - not enough balance', async () => {
+	test('Transfer from existent accounts - not enough balance', async () => {
 		try {
 			let response = await axios.post('http://127.0.0.1:5000/event', {
 				type: 'transfer',
@@ -51,12 +51,12 @@ describe('Transfer Usecases', () => {
 				amount: 40,
 			});
 		} catch (err: any) {
-            expect(err.response.status).toBe(500);
+			expect(err.response.status).toBe(500);
 			expect(err.response.data).toBe('not enough balance');
-        }
+		}
 	});
 
-    test('Transfer from non-existent account', async () => {
+	test('Transfer from non-existent account', async () => {
 		try {
 			let response = await axios.post('http://127.0.0.1:5000/event', {
 				type: 'transfer',
@@ -65,9 +65,9 @@ describe('Transfer Usecases', () => {
 				amount: 10,
 			});
 		} catch (err: any) {
-            expect(err.response.status).toBe(404);
+			expect(err.response.status).toBe(404);
 			expect(err.response.data).toBe(0);
-        }
+		}
 	});
 
 	test('Transfer to non-existent account', async () => {
@@ -76,11 +76,10 @@ describe('Transfer Usecases', () => {
 				type: 'transfer',
 				origin: '100',
 				destination: '500',
-				amount: 15,
+				amount: 5,
 			});
-		} catch (err: any) {
-			expect(err.response.status).toBe(404);
-			expect(err.response.data).toBe(0);
-		}
+			expect(response.status).toBe(201);
+			expect(response.data).toEqual({ origin: { id: '100', balance: 5 }, destination: { id: '500', balance: 5 } });
+		} catch (err: any) {}
 	});
 });
