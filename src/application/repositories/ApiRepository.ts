@@ -2,6 +2,8 @@ import { Account } from '../../core/entities/Account';
 
 export abstract class ApiRepository {
 	abstract depositToAccount(input: Input_DepositToAccount): Promise<Output_DepositToAccount>;
+
+	abstract withdrawFromAccount(input: Input_WithdrawFromAccount): Promise<Output_WithdrawFromAccount>;
 }
 
 export type Input_DepositToAccount = {
@@ -10,6 +12,17 @@ export type Input_DepositToAccount = {
 };
 export type Output_DepositToAccount = {
 	destination: {
+		id: string;
+		balance: number;
+	};
+};
+
+export type Input_WithdrawFromAccount = {
+	origin: string;
+	amount: number;
+};
+export type Output_WithdrawFromAccount = {
+	origin: {
 		id: string;
 		balance: number;
 	};

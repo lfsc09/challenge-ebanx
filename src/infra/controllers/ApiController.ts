@@ -1,5 +1,6 @@
 import { NextFunction, Response } from 'express';
 import { DepositUsercase } from '../../application/usecases/Deposit';
+import { WithdrawUsercase } from '../../application/usecases/Withdraw';
 import { ApiError } from '../../core/exceptions/ApiError';
 import { CustomRequest } from '../../main';
 
@@ -25,22 +26,29 @@ export class ApiController {
 	static async event(request: CustomRequest, response: Response, next: NextFunction) {
 		const type: undefined | string = request.body?.type ?? undefined;
 		try {
+			let input;
+			let output;
 			switch (type) {
 				case 'deposit':
-					const input = {
+					input = {
 						destination: request.body?.destination ?? undefined,
 						amount: request.body?.amount ?? undefined,
 					};
-					let output = await new DepositUsercase(request.apiRepositoryMemory).execute(input);
-					response.status(200).json(output);
+					output = await new DepositUsercase(request.apiRepositoryMemory).execute(input);
 					break;
 				case 'withdraw':
+					input = {
+						origin: request.body?.origin ?? undefined,
+						amount: request.body?.amount ?? undefined,
+					};
+					output = await new WithdrawUsercase(request.apiRepositoryMemory).execute(input);
 					break;
 				case 'transfer':
 					break;
 				default:
 					throw new ApiError(500, 'invalid type');
 			}
+			response.status(200).json(output);
 		} catch (err: any) {
 			return next(err instanceof ApiError ? err : new ApiError(500, err));
 		}
