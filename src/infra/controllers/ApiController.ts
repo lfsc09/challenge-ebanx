@@ -1,23 +1,39 @@
 import { NextFunction, Response } from 'express';
+import { BalanceUsercase } from '../../application/usecases/Balance';
 import { DepositUsercase } from '../../application/usecases/Deposit';
+import { ResetUsercase } from '../../application/usecases/Reset';
+import { TransferUsercase } from '../../application/usecases/Transfer';
 import { WithdrawUsercase } from '../../application/usecases/Withdraw';
 import { ApiError } from '../../core/exceptions/ApiError';
 import { CustomRequest } from '../../main';
-import { TransferUsercase } from '../../application/usecases/Transfer';
-import { ResetUsercase } from '../../application/usecases/Reset';
 
 export class ApiController {
-    /**
-     * Reset the memory repository
-     */
-    static async reset(request: CustomRequest, response: Response, next: NextFunction) {
-        try {
-            await new ResetUsercase(request.apiRepositoryMemory).execute();
-            response.status(200).send();
-        } catch (err: any) {
-            return next(err instanceof ApiError ? err : new ApiError(500, err));
-        }
-    }
+	/**
+	 * Reset the memory repository
+	 */
+	static async reset(request: CustomRequest, response: Response, next: NextFunction) {
+		try {
+			await new ResetUsercase(request.apiRepositoryMemory).execute();
+			response.status(200).send();
+		} catch (err: any) {
+			return next(err instanceof ApiError ? err : new ApiError(500, err));
+		}
+	}
+
+	/**
+	 * Return account balance
+     * 
+     * @var {string} account_id - [Account ID to get balance returned]
+	 */
+	static async balance(request: CustomRequest, response: Response, next: NextFunction) {
+		try {
+            let { account_id = undefined } = request.query;
+			let output = await new BalanceUsercase(request.apiRepositoryMemory).execute({ account_id: <string>account_id });
+			response.status(200).send(output.toString());
+		} catch (err: any) {
+			return next(err instanceof ApiError ? err : new ApiError(500, err));
+		}
+	}
 
 	/**
 	 * Proccess an event

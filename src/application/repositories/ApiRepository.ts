@@ -3,12 +3,19 @@ import { Account } from '../../core/entities/Account';
 export abstract class ApiRepository {
     abstract reset(): Promise<void>
 
+    abstract getAccountBalance(input: Input_GetAccountBalance): Promise<Output_GetAccountBalance>;
+
 	abstract depositToAccount(input: Input_DepositToAccount): Promise<Output_DepositToAccount>;
 
 	abstract withdrawFromAccount(input: Input_WithdrawFromAccount): Promise<Output_WithdrawFromAccount>;
 
     abstract transferBetweenAccount(input: Input_TransferBetweenAccount): Promise<Output_TransferBetweenAccount>;
 }
+
+export type Input_GetAccountBalance = {
+	account_id: string;
+};
+export type Output_GetAccountBalance = number;
 
 export type Input_DepositToAccount = {
 	destination: string;

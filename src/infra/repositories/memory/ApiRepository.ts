@@ -1,9 +1,11 @@
 import {
 	ApiRepository,
 	Input_DepositToAccount,
+	Input_GetAccountBalance,
 	Input_TransferBetweenAccount,
 	Input_WithdrawFromAccount,
 	Output_DepositToAccount,
+	Output_GetAccountBalance,
 	Output_TransferBetweenAccount,
 	Output_WithdrawFromAccount,
 } from '../../../application/repositories/ApiRepository';
@@ -15,9 +17,15 @@ export class ApiRepositoryMemory extends ApiRepository {
 		super();
 	}
 
-    async reset(): Promise<void> {
-        this.accountManager.clear();
-    }
+	async reset(): Promise<void> {
+		this.accountManager.clear();
+	}
+
+	async getAccountBalance(input: Input_GetAccountBalance): Promise<Output_GetAccountBalance> {
+		let account: Account | undefined = this.accountManager.get(input.account_id);
+		if (!account) throw new ApiError(404, 0);
+		return account.getBalance();
+	}
 
 	async depositToAccount(input: Input_DepositToAccount): Promise<Output_DepositToAccount> {
 		let account: Account | undefined = this.accountManager.get(input.destination);
