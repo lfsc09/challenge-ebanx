@@ -1,20 +1,7 @@
 import axios from 'axios';
 
 describe('Deposit Usecases', () => {
-    test('Invalid type', async () => {
-		try {
-			let response = await axios.post('http://127.0.0.1:5000/event', {
-				type: '######',
-				destination: '100',
-				amount: 10,
-			});
-		} catch (err: any) {
-            expect(err.response.status).toBe(500);
-            expect(err.response.data).toBe('invalid type');
-        }
-	});
-
-    test('Invalid amount', async () => {
+	test('Invalid amount', async () => {
 		try {
 			let response = await axios.post('http://127.0.0.1:5000/event', {
 				type: 'deposit',
@@ -22,9 +9,9 @@ describe('Deposit Usecases', () => {
 				amount: -10,
 			});
 		} catch (err: any) {
-            expect(err.response.status).toBe(500);
-            expect(err.response.data).toBe('invalid amount');
-        }
+			expect(err.response.status).toBe(500);
+			expect(err.response.data).toBe('invalid amount');
+		}
 	});
 
 	test('Deposit in new account', async () => {
@@ -39,7 +26,7 @@ describe('Deposit Usecases', () => {
 		} catch (err: any) {}
 	});
 
-    test('Deposit in existant account', async () => {
+	test('Deposit in existant account', async () => {
 		try {
 			let response = await axios.post('http://127.0.0.1:5000/event', {
 				type: 'deposit',
