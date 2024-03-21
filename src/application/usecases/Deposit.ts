@@ -4,6 +4,7 @@ export class DepositUsercase {
     constructor(readonly apiRepository: ApiRepository) {}
 
     async execute(input: Input): Promise<Output> {
+        if (input.destination === undefined) throw new Error('invalid destination');
         const accountBalance = await this.apiRepository.depositToAccount(input);
         return accountBalance;
     }
