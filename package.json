@@ -6,7 +6,7 @@
 	"scripts": {
 		"test": "jest",
 		"build": "rimraf ./build && tsc",
-		"test-build": "node build/app.js",
+		"test-build": "node build/main.js",
 		"dev": "npx nodemon"
 	},
 	"keywords": [],
