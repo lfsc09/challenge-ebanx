@@ -1,6 +1,10 @@
 import axios from 'axios';
 
 describe('Deposit Usecases', () => {
+    beforeAll(async () => {
+        await axios.post('http://127.0.0.1:5000/reset');
+	});
+
 	test('Invalid amount', async () => {
 		try {
 			let response = await axios.post('http://127.0.0.1:5000/event', {

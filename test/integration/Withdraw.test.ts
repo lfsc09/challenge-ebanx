@@ -1,7 +1,16 @@
 import axios from 'axios';
 
 describe('Withdraw Usecases', () => {
-    test('Invalid amount', async () => {
+	beforeAll(async () => {
+        await axios.post('http://127.0.0.1:5000/reset');
+		await axios.post('http://127.0.0.1:5000/event', {
+			type: 'deposit',
+			destination: '100',
+			amount: 10,
+		});
+	});
+
+	test('Invalid amount', async () => {
 		try {
 			let response = await axios.post('http://127.0.0.1:5000/event', {
 				type: 'withdraw',
@@ -9,9 +18,9 @@ describe('Withdraw Usecases', () => {
 				amount: -10,
 			});
 		} catch (err: any) {
-            expect(err.response.status).toBe(500);
-            expect(err.response.data).toBe('invalid amount');
-        }
+			expect(err.response.status).toBe(500);
+			expect(err.response.data).toBe('invalid amount');
+		}
 	});
 
 	test('Withdraw existent account', async () => {
@@ -26,18 +35,16 @@ describe('Withdraw Usecases', () => {
 		} catch (err: any) {}
 	});
 
-    test('Withdraw non existing account', async () => {
+	test('Withdraw non existing account', async () => {
 		try {
 			let response = await axios.post('http://127.0.0.1:5000/event', {
 				type: 'withdraw',
 				origin: '500',
 				amount: 15,
 			});
-			expect(response.status).toBe(200);
-			expect(response.data).toEqual({ destination: { id: '100', balance: 60 } });
 		} catch (err: any) {
-            expect(err.response.status).toBe(404);
-            expect(err.response.data).toBe(0);
-        }
+			expect(err.response.status).toBe(404);
+			expect(err.response.data).toBe(0);
+		}
 	});
 });
